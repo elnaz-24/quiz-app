@@ -4,45 +4,21 @@ import quizCompleteImage from "../assets/quiz-complete.png";
 import Question from "./Question";
 
 export default function Quiz() {
-  //fix part200
-  // const shuffledAnswers = useRef();
-
-  const [answerState, setAnswerState] = useState("");
-  // const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
-  //fix part 200
-  // const [shuffledAnswers, setShuffledAnswers] = useState([]);
 
-  const activeQuestionIndex =
-    answerState === "" ? userAnswers.length : userAnswers.length - 1;
-  // //shuffle
-  // const shuffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
-  // // shuffledAnswers.sort((a,b)=>1)
-  // shuffledAnswers.sort((a, b) => Math.random() - 0.5);
-
+  const activeQuestionIndex = userAnswers.length;
   const quizIsComplete = activeQuestionIndex === QUESTIONS.length;
 
-  const handleSelectAnswer = useCallback(
-    function handleSelectAnswer(selectedAnswer) {
-      //Highlighting Selected Answers
-      setAnswerState("answered");
+  const handleSelectAnswer = useCallback(function handleSelectAnswer(
+    selectedAnswer
+  ) {
+    //Highlighting Selected Answers
 
-      setUserAnswers((prevUserAnswers) => {
-        return [...prevUserAnswers, selectedAnswer];
-      });
-      setTimeout(() => {
-        if (selectedAnswer === QUESTIONS[activeQuestionIndex].answers[0]) {
-          setAnswerState("correct");
-        } else {
-          setAnswerState("wrong");
-        }
-        setTimeout(() => {
-          setAnswerState("");
-        }, 2000);
-      }, 1000);
-    },
-    [activeQuestionIndex]
-  );
+    setUserAnswers((prevUserAnswers) => {
+      return [...prevUserAnswers, selectedAnswer];
+    });
+  },
+  []);
 
   // progress bar
   const handleSkipAnswer = useCallback(
@@ -74,12 +50,8 @@ export default function Quiz() {
     <div id="quiz">
       <div id="question">
         <Question
-          key={activeQuestionIndex}
-          questionText={QUESTIONS[activeQuestionIndex].text}
-          answers={QUESTIONS[activeQuestionIndex].answers}
+          index={activeQuestionIndex}
           onSelectAnswer={handleSelectAnswer}
-          answerState={answerState}
-          selectedAnswer={userAnswers[userAnswers.length - 1]}
           onSkipAnswer={handleSkipAnswer}
         />
         {/* <QuestionTimer
